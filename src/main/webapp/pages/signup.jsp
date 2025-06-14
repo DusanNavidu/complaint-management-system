@@ -2,76 +2,40 @@
 <html>
 <head>
     <title>SignUp page</title>
-    <style>
-        form {
-            margin-top: 20px;
-        }
-
-        input, select {
-            margin-bottom: 10px;
-            padding: 8px;
-            width: 250px;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: auto;
-        }
-
-        .success {
-            color: green;
-        }
-    </style>
+    <link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
 <main>
     <section class="container">
-        <img src="../assets/image/personal-information-form-identity-concept.jpg" alt="Logo" style="width: 100px; height: 100px;">
-        <div>
-            <h1>Signup Page</h1>
-        </div>
-
-        <!-- SIGNUP FORM -->
-        <form action="<%= request.getContextPath() %>/signup" method="post">
-            <%--@declare id="role"--%><label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-
-            <label for="full_name">Full Name:</label>
-            <input type="text" name="full_name" id="full_name" required>
-
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-
+        <img src="assets/image/personal-information-form-identity-concept.jpg" alt="signup image" class="signup-image">
+        <form>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            <label for="birthday">Birthday</label>
+            <input type="date" id="birthday" name="birthday" placeholder="Enter your birthday" required>
+            <label for="nic_number">Email</label>
+            <input type="text" id="nic_number" name="nic_number" placeholder="Enter your nic number" required>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
             <label for="role">Role:</label>
-            <select name="role" required>
+            <select name="role" id="role" required>
                 <option value="EMPLOYEE">EMPLOYEE</option>
                 <option value="ADMIN">ADMIN</option>
             </select>
-
-            <!-- hidden field for is_active -->
-            <input type="hidden" name="is_active" value="true">
-
-            <br>
-            <input type="submit" value="Sign Up">
+            <div>
+                <button type="submit" class="signup-button">Sign Up</button>
+                <div>
+                    <label for="signin">Do you have already existed account?</label>
+                    <a href="signin.jsp" id="signin">Sign In</a>
+                </div>
+            </div>
         </form>
-
-        <!-- Optional success message -->
-        <%
-            String message = request.getParameter("message");
-            if (message != null) {
-        %>
-        <p class="success"><%= message %></p>
-        <%
-            }
-        %>
     </section>
 </main>
 </body>
