@@ -1,4 +1,4 @@
-package lk.ijse.gdse72.complaintmanagementsystem;
+package lk.ijse.gdse72.complaintmanagementsystem.controller;
 
 import java.io.*;
 import jakarta.servlet.http.*;

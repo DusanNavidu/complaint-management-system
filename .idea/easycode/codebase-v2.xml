@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/main/java/lk/ijse/gdse72/complaintmanagementsystem/controller/HelloServlet.java;C:/Users/USER/Documents/AAD/Assignment/Complaint Management System/src/main/java/lk/ijse/gdse72/complaintmanagementsystem/controller/SignUpServlet.java;C:/Users/USER/Documents/AAD/Assignment/Complaint Management System/src/main/java/lk/ijse/gdse72/complaintmanagementsystem/model/User.java;C:/Users/USER/Documents/AAD/Assignment/Complaint Management System/src/main/java/lk/ijse/gdse72/complaintmanagementsystem/util/DataSource.java;C:/Users/USER/Documents/AAD/Assignment/Complaint Management System/src/main/webapp/css/signup.css" />
+  </component>
+</project>

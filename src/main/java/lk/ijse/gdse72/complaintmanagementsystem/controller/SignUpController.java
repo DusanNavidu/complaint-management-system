@@ -1,5 +1,6 @@
 package lk.ijse.gdse72.complaintmanagementsystem.controller;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,41 +8,38 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse72.complaintmanagementsystem.dao.UserDAO;
 import lk.ijse.gdse72.complaintmanagementsystem.model.User;
+import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.UUID;
 
-@WebServlet("/sign-up")
+@WebServlet(name = "signup", value = "/signup")
 public class SignUpController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Generate random UUID for user_id
-        String userId = UUID.randomUUID().toString();
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String fullName = req.getParameter("fullName");
-        String email = req.getParameter("email");
-        String role = req.getParameter("role");
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource dataSource = (BasicDataSource) servletContext.getAttribute("ds");
 
-        // Create a new user
-        User user = new User(userId, username, password, fullName, email, role, true);
+        // Build User object
+        User user = new User();
+        user.setUserId(UUID.randomUUID().toString());
+        user.setUsername(req.getParameter("username"));
+        user.setPassword(req.getParameter("password"));
+        user.setFullName(req.getParameter("full_name"));
+        user.setEmail(req.getParameter("email"));
+        user.setRole(req.getParameter("role"));
+        user.setActive(Boolean.parseBoolean(req.getParameter("is_active")));
 
-        // Get the datasource from servlet context
-        DataSource ds = (DataSource) getServletContext().getAttribute("ds");
-        UserDAO userDAO = new UserDAO(ds);
+        // Call DAO
+        UserDAO userDAO = new UserDAO(dataSource);
+        boolean result = userDAO.saveUser(user);
 
-        try {
-            boolean success = userDAO.save(user);
-            if (success) {
-                resp.getWriter().write("User registered successfully!");
-            } else {
-                resp.getWriter().write("Failed to register user.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("An error occurred while registering user.");
+        if (result) {
+            resp.sendRedirect(req.getContextPath() + "/pages/signup.jsp?message=User registered successfully");
+        } else {
+            resp.getWriter().println("User registration failed");
         }
     }
 }
