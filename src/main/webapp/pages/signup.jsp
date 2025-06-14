@@ -12,31 +12,58 @@
             <h1>Sign Up</h1>
             <div class="information-box">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <input type="text" id="name" name="name"
+                       value="${not empty oldName ? oldName : ''}"
+                ${not empty nameError ? 'class="invalid"' : ''}
+                       placeholder="Enter your full name" required>
+                <p class="error">${nameError}</p>
+
             </div>
             <div class="information-box">
                 <label for="birthday">Birthday</label>
-                <input type="date" id="birthday" name="birthday" placeholder="Enter your birthday" required>
+                <input type="date" id="birthday" name="birthday"
+                       class="${not empty birthdayError ? 'invalid' : ''}"
+                       placeholder="Enter your birthday" required>
+                <p class="error">${birthdayError}</p>
             </div>
             <div class="information-box">
-                <label for="nic_number">Email</label>
-                <input type="text" id="nic_number" name="nic_number" placeholder="Enter your nic number" required>
+                <label for="nic_number">NIC Number</label>
+                <input type="text" id="nic_number" name="nic_number"
+                       value="${not empty oldNICNumber ? oldNICNumber : ''}"
+                ${not empty nicNumberError ? 'class="invalid"' : ''}
+                       placeholder="Enter your NIC number" required>
+                <p class="error">${nicNumberError}</p>
             </div>
             <div class="information-box">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <input type="text" id="username" name="username"
+                       value="${not empty oldUsername ? oldUsername : ''}"
+                ${not empty usernameError ? 'class="invalid"' : ''}
+                       placeholder="Enter your username" required>
+                <p class="error">${usernameError}</p>
             </div>
             <div class="information-box">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <input type="email" id="email" name="email"
+                       value="${not empty oldEmail ? oldEmail : ''}"
+                ${not empty emailError ? 'class="invalid"' : ''}
+                       placeholder="Enter your email" required>
+                <p class="error">${emailError}</p>
             </div>
             <div class="information-box">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="password" name="password"
+                       class="${not empty passwordError ? 'invalid' : ''}"
+                       placeholder="Enter your password & min length 6 characters" required>
+                <p class="error">${passwordError}</p>
             </div>
+
             <div class="information-box">
                 <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                <input type="password" id="confirm_password" name="confirm_password"
+                       class="${not empty confirmPasswordError ? 'invalid' : ''}"
+                       placeholder="Confirm your password" required>
+                <p class="error">${confirmPasswordError}</p>
             </div>
             <div class="information-box">
                 <label for="role">Role:</label>
@@ -44,6 +71,7 @@
                     <option value="EMPLOYEE">EMPLOYEE</option>
                     <option value="ADMIN">ADMIN</option>
                 </select>
+                <p class="error">${roleError}</p>
             </div>
             <div class="information-box">
                 <button type="submit" class="signup-button">Sign Up</button>
@@ -55,5 +83,6 @@
         </form>
     </section>
 </main>
+<script src="js/signup.js"></script>
 </body>
 </html>

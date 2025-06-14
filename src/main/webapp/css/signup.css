@@ -27,7 +27,6 @@ form{
 .information-box{
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
 }
 .information-box2{
     display: flex;
@@ -52,4 +51,7 @@ button{
 }
 #signin-lable{
     text-align: center;
+}
+p{
+    color: red;
 }
