@@ -31,7 +31,7 @@
 <body>
 <main>
     <section class="container">
-        <img src="assets/image/personal-information-form-identity-concept.jpg" alt="Logo" style="width: 100px; height: 100px;">
+        <img src="../assets/image/personal-information-form-identity-concept.jpg" alt="Logo" style="width: 100px; height: 100px;">
         <div>
             <h1>Signup Page</h1>
         </div>
