@@ -19,6 +19,8 @@ main{
 .signup-image{
     width:40vw;
     object-fit: cover;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 form{
     width: 40vw;
@@ -49,7 +51,7 @@ button{
     height: 40px;
     border-radius: 5px;
 }
-#signup-lable{
+#signin-lable{
     text-align: center;
 }
 p{

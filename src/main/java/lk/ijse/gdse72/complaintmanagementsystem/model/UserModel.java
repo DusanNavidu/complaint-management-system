@@ -3,7 +3,7 @@ package lk.ijse.gdse72.complaintmanagementsystem.model;
 import lk.ijse.gdse72.complaintmanagementsystem.dto.UserDTO;
 import lk.ijse.gdse72.complaintmanagementsystem.util.DatabaseConfig;
 
-import java.sql.Connection;
+import java.sql.*;
 
 public class UserModel {
     public static String generateUserId() {
@@ -32,4 +32,49 @@ public class UserModel {
         }
         return false;
     }
+
+    public UserDTO userLogin(String username, String password) throws SQLException {
+        String sql = "SELECT * FROM users WHERE LOWER(username) = LOWER(?)";
+
+        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String dbPassword = resultSet.getString("password");
+
+                System.out.println("Debug: Retrieved password from DB: " + dbPassword);
+                System.out.println("Debug: Provided password: " + password);
+                if (dbPassword.equals(password)) {
+                    return extractUserFromResultSet(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
+
+
+    private UserDTO extractUserFromResultSet(ResultSet resultSet) throws SQLException {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUser_id(resultSet.getString("user_id"));
+        userDTO.setFull_name(resultSet.getString("full_name"));
+        Date birthdayDate = resultSet.getDate("birthday");
+        if (birthdayDate != null) {
+            userDTO.setBirthday(String.valueOf(birthdayDate.toLocalDate()));
+        }
+        userDTO.setNic_number(resultSet.getString("nic_number"));
+        userDTO.setUsername(resultSet.getString("username"));
+        userDTO.setEmail(resultSet.getString("email"));
+        userDTO.setPassword(null);  // do not expose password
+        userDTO.setRole(resultSet.getString("role"));
+        Timestamp createdAt = resultSet.getTimestamp("created_at");
+        if (createdAt != null) {
+            userDTO.setCreated_at(createdAt.toLocalDateTime());
+        }
+        return userDTO;
+    }
+
 }

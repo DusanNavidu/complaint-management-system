@@ -15,8 +15,8 @@ public class UserDTO {
     private String birthday;
     private String nic_number;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String role;
     private LocalDateTime created_at;
 

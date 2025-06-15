@@ -2,6 +2,8 @@ package lk.ijse.gdse72.complaintmanagementsystem.util;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.sql.DataSource;
+
 public class DatabaseConfig {
     private static final BasicDataSource basicDataSource = new BasicDataSource();
 
@@ -23,7 +25,7 @@ public class DatabaseConfig {
             System.out.println("=== Database connection pool ==== initialization failed.");
         }
     }
-    public static BasicDataSource getDataSource() {
+    public static DataSource getDataSource() {
         return basicDataSource;
     }
 

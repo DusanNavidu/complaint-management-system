@@ -3,11 +3,69 @@
 <head>
     <title>SignUp page</title>
     <link rel="stylesheet" href="css/signup.css">
+    <style>
+        body{
+            margin: 0;
+        }
+        main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container{
+            width: 80vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid black;
+            border-radius: 20px;
+        }
+        .signup-image{
+            width:40vw;
+            object-fit: cover;
+        }
+        form{
+            width: 40vw;
+            padding: 50px;
+        }
+        .information-box{
+            display: flex;
+            flex-direction: column;
+        }
+        .information-box2{
+            display: flex;
+        }
+        h1{
+            text-align: center;
+            font-family: "Times New Roman";
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+        input{
+            height: 40px;
+            border-radius: 5px;
+        }
+        select{
+            height: 40px;
+            border-radius: 5px;
+        }
+        button{
+            height: 40px;
+            border-radius: 5px;
+        }
+        #signup-lable{
+            text-align: center;
+        }
+        p{
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <main>
     <section class="container">
-        <img src="assets/image/personal-information-form-identity-concept.jpg" alt="signup image" class="signup-image">
         <form action="${pageContext.request.contextPath}/signup" method="post" class="signup-form">
             <h1>Sign Up</h1>
             <div class="information-box">
@@ -77,10 +135,11 @@
                 <button type="submit" class="signup-button">Sign Up</button>
                 <div class="information-box2">
                     <label id="signin-lable" for="signin">Do you have already existed account?</label>
-                    <a href="signin.jsp" id="signin">Sign In</a>
+                    <a href="pages/signin.jsp" id="signin">Sign In</a>
                 </div>
             </div>
         </form>
+        <img src="assets/image/personal-information-form-identity-concept.jpg" alt="signup image" class="signup-image">
     </section>
 </main>
 <script src="js/signup.js"></script>
