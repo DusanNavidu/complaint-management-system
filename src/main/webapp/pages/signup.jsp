@@ -1,147 +1,92 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>SignUp page</title>
-    <link rel="stylesheet" href="css/signup.css">
-    <style>
-        body{
-            margin: 0;
-        }
-        main{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .container{
-            width: 80vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid black;
-            border-radius: 20px;
-        }
-        .signup-image{
-            width:40vw;
-            object-fit: cover;
-        }
-        form{
-            width: 40vw;
-            padding: 50px;
-        }
-        .information-box{
-            display: flex;
-            flex-direction: column;
-        }
-        .information-box2{
-            display: flex;
-        }
-        h1{
-            text-align: center;
-            font-family: "Times New Roman";
-            font-weight: bold;
-            font-size: 2.5rem;
-        }
-        input{
-            height: 40px;
-            border-radius: 5px;
-        }
-        select{
-            height: 40px;
-            border-radius: 5px;
-        }
-        button{
-            height: 40px;
-            border-radius: 5px;
-        }
-        #signup-lable{
-            text-align: center;
-        }
-        p{
-            color: red;
-        }
-    </style>
+    <title>Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<main>
-    <section class="container">
-        <form action="${pageContext.request.contextPath}/signup" method="post" class="signup-form">
-            <h1>Sign Up</h1>
-            <div class="information-box">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name"
-                       value="${not empty oldName ? oldName : ''}"
-                ${not empty nameError ? 'class="invalid"' : ''}
-                       placeholder="Enter your full name" required>
-                <p class="error">${nameError}</p>
+<body class="bg-light">
 
-            </div>
-            <div class="information-box">
-                <label for="birthday">Birthday</label>
-                <input type="date" id="birthday" name="birthday"
-                       class="${not empty birthdayError ? 'invalid' : ''}"
-                       placeholder="Enter your birthday" required>
-                <p class="error">${birthdayError}</p>
-            </div>
-            <div class="information-box">
-                <label for="nic_number">NIC Number</label>
-                <input type="text" id="nic_number" name="nic_number"
-                       value="${not empty oldNICNumber ? oldNICNumber : ''}"
-                ${not empty nicNumberError ? 'class="invalid"' : ''}
-                       placeholder="Enter your NIC number" required>
-                <p class="error">${nicNumberError}</p>
-            </div>
-            <div class="information-box">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"
-                       value="${not empty oldUsername ? oldUsername : ''}"
-                ${not empty usernameError ? 'class="invalid"' : ''}
-                       placeholder="Enter your username" required>
-                <p class="error">${usernameError}</p>
-            </div>
-            <div class="information-box">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email"
-                       value="${not empty oldEmail ? oldEmail : ''}"
-                ${not empty emailError ? 'class="invalid"' : ''}
-                       placeholder="Enter your email" required>
-                <p class="error">${emailError}</p>
-            </div>
-            <div class="information-box">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password"
-                       class="${not empty passwordError ? 'invalid' : ''}"
-                       placeholder="Enter your password & min length 6 characters" required>
-                <p class="error">${passwordError}</p>
-            </div>
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <!-- Image -->
+        <div class="col-lg-6 d-none d-lg-block">
+            <img src="${pageContext.request.contextPath}/assets/image/personal-information-form-identity-concept.jpg"
+                 alt="signup" class="w-100 img-fluid rounded-start">
+        </div>
 
-            <div class="information-box">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password"
-                       class="${not empty confirmPasswordError ? 'invalid' : ''}"
-                       placeholder="Confirm your password" required>
-                <p class="error">${confirmPasswordError}</p>
-            </div>
-            <div class="information-box">
-                <label for="role">Role:</label>
-                <select name="role" id="role" required>
-                    <option value="EMPLOYEE">EMPLOYEE</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
-                <p class="error">${roleError}</p>
-            </div>
-            <div class="information-box">
-                <button type="submit" class="signup-button">Sign Up</button>
-                <div class="information-box2">
-                    <label id="signin-lable" for="signin">Do you have already existed account?</label>
-                    <a href="pages/signin.jsp" id="signin">Sign In</a>
+        <!-- Form -->
+        <div class="col-lg-6 col-md-10 bg-white p-4 rounded shadow">
+            <h2 class="text-center mb-4">Sign Up</h2>
+            <form action="${pageContext.request.contextPath}/signup" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control"
+                           value="${not empty oldName ? oldName : ''}" required>
+                    <small class="text-danger">${nameError}</small>
                 </div>
-            </div>
-        </form>
-        <img src="assets/image/personal-information-form-identity-concept.jpg" alt="signup image" class="signup-image">
-    </section>
-</main>
-<script src="js/signup.js"></script>
+
+                <div class="mb-3">
+                    <label for="birthday" class="form-label">Birthday</label>
+                    <input type="date" id="birthday" name="birthday" class="form-control" required>
+                    <small class="text-danger">${birthdayError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nic_number" class="form-label">NIC Number</label>
+                    <input type="text" id="nic_number" name="nic_number" class="form-control"
+                           value="${not empty oldNICNumber ? oldNICNumber : ''}" required>
+                    <small class="text-danger">${nicNumberError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control"
+                           value="${not empty oldUsername ? oldUsername : ''}" required>
+                    <small class="text-danger">${usernameError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control"
+                           value="${not empty oldEmail ? oldEmail : ''}" required>
+                    <small class="text-danger">${emailError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <small class="text-danger">${passwordError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                    <small class="text-danger">${confirmPasswordError}</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select name="role" id="role" class="form-select" required>
+                        <option value="EMPLOYEE">EMPLOYEE</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                    <small class="text-danger">${roleError}</small>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+
+                <div class="text-center">
+                    <label>Already have an account? <a href="${pageContext.request.contextPath}/pages/signin.jsp">Sign In</a></label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
