@@ -65,4 +65,23 @@ public class ValidationUtil {
         return email != null && !email.trim().isEmpty() &&
                email.matches("^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$");
     }
+    public static boolean isValidSubject(String subject) {
+        return subject != null && subject.matches("[A-Za-z0-9 .,-]{3,}");
+    }
+
+    public static boolean isValidDescription(String description) {
+        return description != null && description.length() > 5;
+    }
+
+    public static boolean isValidCategory(String category) {
+        return category != null && !category.isBlank();
+    }
+
+    public static boolean isValidDepartment(String department) {
+        return department != null && !department.isBlank();
+    }
+
+    public static boolean isValidStatus(String status) {
+        return status != null && (status.equals("PENDING") || status.equals("IN_PROGRESS") || status.equals("RESOLVED") || status.equals("REJECTED"));
+    }
 }
