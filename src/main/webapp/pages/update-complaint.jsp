@@ -28,20 +28,20 @@
     <div class="mb-3">
         <label>Category</label>
         <select name="category" class="form-select" required>
-            <option value="ROADS" <%= complaint.getCategory().equals("ROADS") ? "selected" : "" %>>Road Maintenance</option>
-            <option value="WASTE" <%= complaint.getCategory().equals("WASTE") ? "selected" : "" %>>Waste Management</option>
-            <option value="DRAINAGE" <%= complaint.getCategory().equals("DRAINAGE") ? "selected" : "" %>>Drainage and Sewage</option>
-            <option value="WATER" <%= complaint.getCategory().equals("WATER") ? "selected" : "" %>>Water Supply Issues</option>
-            <option value="ELECTRIC" <%= complaint.getCategory().equals("ELECTRIC") ? "selected" : "" %>>Electricity</option>
-            <option value="BUILDING" <%= complaint.getCategory().equals("BUILDING") ? "selected" : "" %>>Unauthorized Constructions</option>
-            <option value="PARKS" <%= complaint.getCategory().equals("PARKS") ? "selected" : "" %>>Public Parks</option>
-            <option value="ANIMALS" <%= complaint.getCategory().equals("ANIMALS") ? "selected" : "" %>>Stray Animals</option>
-            <option value="NOISE" <%= complaint.getCategory().equals("NOISE") ? "selected" : "" %>>Noise Pollution</option>
-            <option value="SANITATION" <%= complaint.getCategory().equals("SANITATION") ? "selected" : "" %>>Sanitation</option>
-            <option value="TRAFFIC" <%= complaint.getCategory().equals("TRAFFIC") ? "selected" : "" %>>Traffic</option>
-            <option value="SIGNBOARD" <%= complaint.getCategory().equals("SIGNBOARD") ? "selected" : "" %>>Signboards</option>
-            <option value="GRANTS" <%= complaint.getCategory().equals("GRANTS") ? "selected" : "" %>>Grants</option>
-            <option value="LAND" <%= complaint.getCategory().equals("LAND") ? "selected" : "" %>>Land</option>
+            <option value="Road Maintenance" <%= complaint.getCategory().equals("ROADS") ? "selected" : "" %>>Road Maintenance</option>
+            <option value="Waste Management" <%= complaint.getCategory().equals("Waste Management") ? "selected" : "" %>>Waste Management</option>
+            <option value="Drainage and Sewage" <%= complaint.getCategory().equals("Drainage and Sewage") ? "selected" : "" %>>Drainage and Sewage</option>
+            <option value="Water Supply Issues" <%= complaint.getCategory().equals("Water Supply Issues") ? "selected" : "" %>>Water Supply Issues</option>
+            <option value="Electricity" <%= complaint.getCategory().equals("Electricity") ? "selected" : "" %>>Electricity</option>
+            <option value="Unauthorized Constructions" <%= complaint.getCategory().equals("Unauthorized Constructions") ? "selected" : "" %>>Unauthorized Constructions</option>
+            <option value="Public Parks" <%= complaint.getCategory().equals("Public Parks") ? "selected" : "" %>>Public Parks</option>
+            <option value="Stray Animals" <%= complaint.getCategory().equals("Stray Animals") ? "selected" : "" %>>Stray Animals</option>
+            <option value="Noise Pollution" <%= complaint.getCategory().equals("Noise Pollution") ? "selected" : "" %>>Noise Pollution</option>
+            <option value="Sanitation" <%= complaint.getCategory().equals("Sanitation") ? "selected" : "" %>>Sanitation</option>
+            <option value="Traffic" <%= complaint.getCategory().equals("Traffic") ? "selected" : "" %>>Traffic</option>
+            <option value="Signboards" <%= complaint.getCategory().equals("Signboards") ? "selected" : "" %>>Signboards</option>
+            <option value="Grants" <%= complaint.getCategory().equals("Grants") ? "selected" : "" %>>Grants</option>
+            <option value="Land" <%= complaint.getCategory().equals("Land") ? "selected" : "" %>>Land</option>
             <option value="OTHER" <%= complaint.getCategory().equals("OTHER") ? "selected" : "" %>>Other</option>
         </select>
     </div>

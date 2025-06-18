@@ -140,4 +140,23 @@ public class ComplaintModel {
         }
         return null;
     }
+
+    public int countByStatus(String status) {
+        String sql = "SELECT COUNT(*) FROM complaint WHERE status = ?";
+        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                System.out.println("Status: " + status + " | Count: " + count);
+                return count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

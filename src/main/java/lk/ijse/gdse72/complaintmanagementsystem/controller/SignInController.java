@@ -41,10 +41,10 @@ public class SignInController extends HttpServlet {
 
             if (userDTO.isAdmin()) {
                 System.out.println("Admin user logged in: " + userDTO.getUsername());
-                response.sendRedirect(request.getContextPath() + "/pages/adminDashboardComplaint.jsp");
+                response.sendRedirect(request.getContextPath() + "/pages/adminDashboardHome.jsp");
             } else if (userDTO.isEmployee()) {
                 System.out.println("Employee user logged in: " + userDTO.getUsername());
-                response.sendRedirect(request.getContextPath() + "/pages/employee-adminDashboardHome.jsp");
+                response.sendRedirect(request.getContextPath() + "/pages/adminDashboardHome.jsp");
             } else {
                 // Role not recognized
                 System.out.println("User with unrecognized role logged in: " + userDTO.getUsername());

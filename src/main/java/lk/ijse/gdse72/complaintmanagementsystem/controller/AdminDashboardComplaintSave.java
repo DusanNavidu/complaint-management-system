@@ -32,6 +32,7 @@ public class AdminDashboardComplaintSave extends HttpServlet {
         String department = httpServletRequest.getParameter("department");
         String status = httpServletRequest.getParameter("status");
         String remarks = httpServletRequest.getParameter("remarks");
+        remarks = (remarks != null && !remarks.trim().isEmpty()) ? remarks.trim() : null;
 
         boolean hasError = false;
 
@@ -55,10 +56,10 @@ public class AdminDashboardComplaintSave extends HttpServlet {
             httpServletRequest.setAttribute("statusError", "Invalid status");
             hasError = true;
         }
-        if (!ValidationUtil.isValidRemarks(remarks)) {
-            httpServletRequest.setAttribute("remarksError" , "Try again... minimum 5 characters");
-            hasError = true;
-        }
+//        if (!ValidationUtil.isValidRemarks(remarks)) {
+//            httpServletRequest.setAttribute("remarksError" , "Try again... minimum 5 characters");
+//            hasError = true;
+//        }
 
         if (hasError) {
             System.out.println("Validation errors found, redirecting to form.");
