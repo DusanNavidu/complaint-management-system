@@ -151,9 +151,9 @@
                     <th>Category</th>
                     <th>Department</th>
                     <th>Status</th>
-                    <th>Created</th>
                     <th>Remarks</th>
-                    <th>Updated</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -175,17 +175,35 @@
                     <td><%= c.getDescription() %></td>
                     <td><%= c.getCategory() %></td>
                     <td><%= c.getDepartment() %></td>
-                    <td><%= c.getStatus() %></td>
-                    <td><%= c.getRemarks() %></td>
+                    <td>
+                        <span class="badge
+                            <%=
+                                "PENDING".equals(c.getStatus()) ? "text-bg-success" :
+                                "IN_PROGRESS".equals(c.getStatus()) ? "text-bg-warning" :
+                                "RESOLVED".equals(c.getStatus()) ? "text-bg-primary" :
+                                "REJECTED".equals(c.getStatus()) ? "text-bg-danger" :
+                                "text-bg-secondary"
+                            %>">
+                            <%= c.getStatus() %>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge
+                            <%=
+                                (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks()))
+                                ? "text-bg-dark" : "text-bg-secondary"
+                            %>">
+                            <%= (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks())) ? "No Remarks" : c.getRemarks() %>
+                        </span>
+                    </td>
                     <td><%= c.getCreated_at() %></td>
-                    <td><%= c.getUpdated_at() %></td>
+                    <td><%= c.getUpdated_at() %> last update user : <%= user.getUser_id() %></td>
                     <td class="d-flex gap-2">
                         <a class="btn btn-warning btn-sm w-50"
-                            href="${pageContext.request.contextPath}/complaint/update?complaintId=<%= c.getComplaint_id() %>"
-                            onclick="return confirm('Are you sure you want to update this complaint?')">Update</a>
+                           href="${pageContext.request.contextPath}/complaint/update?complaintId=<%= c.getComplaint_id() %>">Update</a>
                         <a class="btn btn-danger btn-sm w-50"
-                            href="${pageContext.request.contextPath}/complaint/delete?complaintId=<%= c.getComplaint_id() %>"
-                            onclick="return confirm('Are you sure you want to delete this complaint?');">Delete</a>
+                           href="${pageContext.request.contextPath}/complaint/delete?complaintId=<%= c.getComplaint_id() %>"
+                           onclick="return confirm('Are you sure you want to delete this complaint?');">Delete</a>
                     </td>
                 </tr>
                 <%

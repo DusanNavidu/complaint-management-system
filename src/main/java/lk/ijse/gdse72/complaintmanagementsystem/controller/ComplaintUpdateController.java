@@ -1,5 +1,6 @@
 package lk.ijse.gdse72.complaintmanagementsystem.controller;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,8 @@ public class ComplaintUpdateController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String complaintId = req.getParameter("complaint_id");
+        // ✅ Fixed: parameter name now matches the form field
+        String complaintId = req.getParameter("complaintId");
         String subject = req.getParameter("subject");
         String description = req.getParameter("description");
         String category = req.getParameter("category");
@@ -54,9 +56,11 @@ public class ComplaintUpdateController extends HttpServlet {
 
         try {
             if (complaintModel.updateComplaint(complaint)) {
-                resp.sendRedirect(req.getContextPath() + "/admin-dashboard.jsp?success=update");
+                System.out.println("Complaint updated successfully: " + complaintId);
+                resp.sendRedirect(req.getContextPath() + "/pages/adminDashboardComplaint.jsp?success=update");
             } else {
-                resp.sendRedirect(req.getContextPath() + "/admin-dashboard.jsp?error=update");
+                System.out.println("Update failed for complaint ID: " + complaintId);
+                resp.sendRedirect(req.getContextPath() + "/pages/update-complaint.jsp?error=update");
             }
         } catch (Exception e) {
             e.printStackTrace();
