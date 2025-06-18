@@ -16,6 +16,7 @@ public class ComplaintDTO {
     private String category;
     private String department;
     private String status;
+    private String remarks;
     private String created_at;
     private String updated_at;
 

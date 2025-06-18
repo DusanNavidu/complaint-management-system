@@ -73,6 +73,10 @@ public class ValidationUtil {
         return description != null && description.length() > 5;
     }
 
+    public static boolean isValidRemarks(String remarks) {
+        return remarks != null && remarks.length() >= 5;
+    }
+
     public static boolean isValidCategory(String category) {
         return category != null && !category.isBlank();
     }

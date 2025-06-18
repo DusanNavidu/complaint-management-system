@@ -76,10 +76,16 @@
                     <div class="text-danger">${categoryError}</div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="description" class="form-label">Description</label>
                     <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter description" required></textarea>
                     <div class="text-danger">${descriptionError}</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="remarks" class="form-label">Remarks</label>
+                    <textarea id="remarks" name="remarks" class="form-control" rows="4" placeholder="Enter remarks ( Admin only )" required></textarea>
+                    <div class="text-danger">${remarksError}</div>
                 </div>
 
                 <div class="col-md-6">
@@ -146,6 +152,7 @@
                     <th>Department</th>
                     <th>Status</th>
                     <th>Created</th>
+                    <th>Remarks</th>
                     <th>Updated</th>
                     <th>Actions</th>
                 </tr>
@@ -169,6 +176,7 @@
                     <td><%= c.getCategory() %></td>
                     <td><%= c.getDepartment() %></td>
                     <td><%= c.getStatus() %></td>
+                    <td><%= c.getRemarks() %></td>
                     <td><%= c.getCreated_at() %></td>
                     <td><%= c.getUpdated_at() %></td>
                     <td class="d-flex gap-2">
@@ -190,5 +198,6 @@
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -35,8 +35,8 @@ public class ComplaintModel {
 
 
     public boolean saveComplaint(ComplaintDTO complaintDTO) {
-        String sql = "INSERT INTO complaint (complaint_id, user_id, subject, description, category, department, status) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO complaint (complaint_id, user_id, subject, description, category, department, status, remarks) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.getDataSource().getConnection();
             var preparedStatement = connection.prepareStatement(sql)) {
@@ -48,6 +48,7 @@ public class ComplaintModel {
             preparedStatement.setString(5, complaintDTO.getCategory());
             preparedStatement.setString(6, complaintDTO.getDepartment());
             preparedStatement.setString(7, complaintDTO.getStatus());
+            preparedStatement.setString(8, complaintDTO.getRemarks());
 
             return preparedStatement.executeUpdate() > 0;
 
@@ -74,6 +75,7 @@ public class ComplaintModel {
                 complaint.setCategory(resultSet.getString("category"));
                 complaint.setDepartment(resultSet.getString("department"));
                 complaint.setStatus(resultSet.getString("status"));
+                complaint.setRemarks(resultSet.getString("remarks"));
                 complaint.setCreated_at(resultSet.getString("created_at"));
                 complaint.setUpdated_at(resultSet.getString("updated_at"));
 
@@ -97,24 +99,45 @@ public class ComplaintModel {
         }
     }
 
-    public boolean updateComplaint(ComplaintDTO complaintDTO) {
-        String sql = "UPDATE complaint SET subject = ?, description = ?, category = ?, department = ?, status = ? " +
-                     "WHERE complaint_id = ?";
+    public boolean updateComplaint(ComplaintDTO complaint) throws SQLException {
+        String sql = "UPDATE complaint SET subject=?, description=?, category=?, department=?, status=?, remarks=?, updated_at=NOW() WHERE complaint_id=?";
+        try (Connection con = DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ps.setString(1, complaint.getSubject());
+            ps.setString(2, complaint.getDescription());
+            ps.setString(3, complaint.getCategory());
+            ps.setString(4, complaint.getDepartment());
+            ps.setString(5, complaint.getStatus());
+            ps.setString(6, complaint.getRemarks());
+            ps.setString(7, complaint.getComplaint_id());
 
-            preparedStatement.setString(1, complaintDTO.getSubject());
-            preparedStatement.setString(2, complaintDTO.getDescription());
-            preparedStatement.setString(3, complaintDTO.getCategory());
-            preparedStatement.setString(4, complaintDTO.getDepartment());
-            preparedStatement.setString(5, complaintDTO.getStatus());
-            preparedStatement.setString(6, complaintDTO.getComplaint_id());
-
-            return preparedStatement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error updating complaint with ID: " + complaintDTO.getComplaint_id(), e);
+            return ps.executeUpdate() > 0;
         }
+    }
+
+
+    public ComplaintDTO getComplaintById(String complaintId) throws SQLException {
+        String sql = "SELECT * FROM complaint WHERE complaint_id = ?";
+        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, complaintId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ComplaintDTO dto = new ComplaintDTO();
+                dto.setComplaint_id(rs.getString("complaint_id"));
+                dto.setUser_id(rs.getString("user_id"));
+                dto.setSubject(rs.getString("subject"));
+                dto.setDescription(rs.getString("description"));
+                dto.setCategory(rs.getString("category"));
+                dto.setDepartment(rs.getString("department"));
+                dto.setStatus(rs.getString("status"));
+                dto.setRemarks(rs.getString("remarks"));
+                dto.setCreated_at(rs.getString("created_at"));
+                dto.setUpdated_at(rs.getString("updated_at"));
+                return dto;
+            }
+        }
+        return null;
     }
 }

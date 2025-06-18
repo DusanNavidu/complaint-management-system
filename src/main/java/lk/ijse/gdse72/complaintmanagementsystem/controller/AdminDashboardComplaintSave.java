@@ -31,6 +31,7 @@ public class AdminDashboardComplaintSave extends HttpServlet {
         String category = httpServletRequest.getParameter("category");
         String department = httpServletRequest.getParameter("department");
         String status = httpServletRequest.getParameter("status");
+        String remarks = httpServletRequest.getParameter("remarks");
 
         boolean hasError = false;
 
@@ -39,7 +40,7 @@ public class AdminDashboardComplaintSave extends HttpServlet {
             hasError = true;
         }
         if (!ValidationUtil.isValidDescription(description)) {
-            httpServletRequest.setAttribute("descriptionError", "Use letters and numbers only");
+            httpServletRequest.setAttribute("descriptionError", "UTry again... minimum 5 characters");
             hasError = true;
         }
         if (!ValidationUtil.isValidCategory(category)) {
@@ -52,6 +53,10 @@ public class AdminDashboardComplaintSave extends HttpServlet {
         }
         if (!ValidationUtil.isValidStatus(status)) {
             httpServletRequest.setAttribute("statusError", "Invalid status");
+            hasError = true;
+        }
+        if (!ValidationUtil.isValidRemarks(remarks)) {
+            httpServletRequest.setAttribute("remarksError" , "Try again... minimum 5 characters");
             hasError = true;
         }
 
@@ -82,6 +87,7 @@ public class AdminDashboardComplaintSave extends HttpServlet {
                 category,
                 department,
                 status,
+                remarks,
                 LocalDateTime.now().toString(),
                 null
         );
