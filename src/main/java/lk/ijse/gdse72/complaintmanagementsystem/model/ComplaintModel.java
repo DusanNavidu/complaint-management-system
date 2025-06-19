@@ -85,11 +85,41 @@ public class ComplaintModel {
         return complaintDTO;
     }
 
-    public boolean deleteComplaints(String complaintId) {
+//    public boolean deleteComplaints(String complaintId) {
+//        String sql = "DELETE FROM complaint WHERE complaint_id = ?";
+//
+//        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//
+//            preparedStatement.setString(1, complaintId);
+//            return preparedStatement.executeUpdate() > 0;
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException("Error deleting complaint with ID: " + complaintId, e);
+//        }
+//    }
+
+    public String getComplaintStatus(String complaintId) {
+        String sql = "SELECT status FROM complaint WHERE complaint_id = ?";
+        try (Connection connection = DatabaseConfig.getDataSource().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, complaintId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("status");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting complaint status for id: " + complaintId, e);
+        }
+        return null;
+    }
+
+    public boolean deleteComplaint(String complaintId) {
         String sql = "DELETE FROM complaint WHERE complaint_id = ?";
 
         try (Connection connection = DatabaseConfig.getDataSource().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, complaintId);
             return preparedStatement.executeUpdate() > 0;
@@ -98,6 +128,7 @@ public class ComplaintModel {
             throw new RuntimeException("Error deleting complaint with ID: " + complaintId, e);
         }
     }
+
 
     public boolean updateComplaint(ComplaintDTO complaint) throws SQLException {
         String sql = "UPDATE complaint SET subject=?, description=?, category=?, department=?, status=?, remarks=?, updated_at=NOW() WHERE complaint_id=?";
@@ -115,7 +146,6 @@ public class ComplaintModel {
             return ps.executeUpdate() > 0;
         }
     }
-
 
     public ComplaintDTO getComplaintById(String complaintId) throws SQLException {
         String sql = "SELECT * FROM complaint WHERE complaint_id = ?";
@@ -159,4 +189,52 @@ public class ComplaintModel {
         return 0;
     }
 
+    public List<ComplaintDTO> getComplaintsByStatus(String status) throws SQLException {
+        Connection connection = DatabaseConfig.getDataSource().getConnection();
+        String query = "SELECT * FROM complaint WHERE status = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, status);
+        ResultSet rs = stmt.executeQuery();
+
+        List<ComplaintDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(new ComplaintDTO(
+                    rs.getString("complaint_id"),
+                    rs.getString("user_id"),
+                    rs.getString("subject"),
+                    rs.getString("description"),
+                    rs.getString("category"),
+                    rs.getString("department"),
+                    rs.getString("status"),
+                    rs.getString("remarks"),
+                    rs.getString("created_at"),
+                    rs.getString("updated_at")
+            ));
+        }
+        return list;
+    }
+
+    public List<ComplaintDTO> getRecentComplaints() throws SQLException {
+        Connection connection = DatabaseConfig.getDataSource().getConnection();
+        String query = "SELECT * FROM complaint ORDER BY created_at DESC LIMIT 10"; // last 10 complaints
+        PreparedStatement stmt = connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+
+        List<ComplaintDTO> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(new ComplaintDTO(
+                    rs.getString("complaint_id"),
+                    rs.getString("user_id"),
+                    rs.getString("subject"),
+                    rs.getString("description"),
+                    rs.getString("category"),
+                    rs.getString("department"),
+                    rs.getString("status"),
+                    rs.getString("remarks"),
+                    rs.getString("created_at"),
+                    rs.getString("updated_at")
+            ));
+        }
+        return list;
+    }
 }

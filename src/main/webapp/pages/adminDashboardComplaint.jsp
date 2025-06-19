@@ -21,22 +21,26 @@
     %>
 
     <!-- Sidebar -->
-    <div class="bg-white border-end p-3" style="min-width: 250px; height: 100vh;">
-        <div class="mb-4">
-            <img src="${pageContext.request.contextPath}/assets/image/images.png" alt="user image" style="border-radius: 50% ;width: 200px; height: 200px;">
-            <p><i>Email : </i> <%= user.getEmail() %></p>
-            <h3 class="mt-3"><p style="font-size: 1.3rem">Welcome,</p><br> <%= user.getFull_name() %></h3>
+    <div class="border-end p-3 position-fixed top-0 left-0" style="min-width: 250px; height: 100vh; background-color: #153c61">
+        <div class="mb-4 text-white">
+            <img src="${pageContext.request.contextPath}/assets/image/images.png" alt="user image"
+                 style="border-radius: 50%; width: 200px; height: 200px;">
+            <p><i>Email:</i> <%= user.getEmail() %></p>
+            <h3 class="mt-3" style="font-size: 1.3rem">Welcome,</h3>
+            <h5><%= user.getFull_name() %></h5>
         </div>
         <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Complaint</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/adminDashboardComplaint.jsp">Complaint</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/complaintTables.jsp">Complaint View</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">User details</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Settings</a></li>
             <li class="nav-item"><a class="nav-link text-danger" href="${pageContext.request.contextPath}/logout">Logout</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
-    <div class="flex-grow-1 p-4" style="height: 100vh">
+    <div class="flex-grow-1 p-5" style="height: 100vh ; margin-left: 250px;">
         <h2>Complaint Management System</h2>
         <p class="text-muted">Dashboard Complaint</p>
 
@@ -77,11 +81,13 @@
                     <div class="text-danger">${descriptionError}</div>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="remarks" class="form-label">Remarks</label>
-                    <textarea id="remarks" name="remarks" class="form-control" rows="4" placeholder="Enter remarks ( Admin only )"></textarea>
-                    <div class="text-danger">${remarksError}</div>
-                </div>
+                <% if ("ADMIN".equalsIgnoreCase(user.getRole())) { %>
+                    <div class="col-md-6">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea id="remarks" name="remarks" class="form-control" rows="4" placeholder="Enter remarks (Admin only)"></textarea>
+                        <div class="text-danger">${remarksError}</div>
+                    </div>
+                <% } %>
 
                 <div class="col-md-6">
                     <label for="department" class="form-label">Department</label>
@@ -128,8 +134,9 @@
                     <div class="text-danger">${statusError}</div>
                 </div>
             </div>
-            <div class="mt-4">
+            <div class="mt-4 d-flex justify-content-end">
                 <button type="submit" class="btn btn-success">Save Complaint</button>
+                <p class="text-primary">${complainMassage}</p>
             </div>
         </form>
 
@@ -173,31 +180,46 @@
                         <td><%= c.getCategory() %></td>
                         <td><%= c.getDepartment() %></td>
                         <td>
-                    <span class="badge
-                        <%= "PENDING".equals(c.getStatus()) ? "text-bg-success" :
-                             "IN_PROGRESS".equals(c.getStatus()) ? "text-bg-warning" :
-                             "RESOLVED".equals(c.getStatus()) ? "text-bg-primary" :
-                             "REJECTED".equals(c.getStatus()) ? "text-bg-danger" :
-                             "text-bg-secondary" %>">
-                        <%= c.getStatus() %>
-                    </span>
+                            <span class="badge
+                                <%= "PENDING".equals(c.getStatus()) ? "text-bg-success" :
+                                     "IN_PROGRESS".equals(c.getStatus()) ? "text-bg-warning" :
+                                     "RESOLVED".equals(c.getStatus()) ? "text-bg-primary" :
+                                     "REJECTED".equals(c.getStatus()) ? "text-bg-danger" :
+                                     "text-bg-secondary" %>">
+                                <%= c.getStatus() %>
+                            </span>
                         </td>
                         <td>
-                    <span class="badge
-                        <%= (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks()))
-                            ? "text-bg-dark" : "text-danger" %>">
-                        <%= (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks())) ? "No Remarks" : c.getRemarks() %>
-                    </span>
+                            <span class="badge
+                                <%= (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks()))
+                                    ? "text-bg-dark" : "text-danger fs-6" %>">
+                                <%= (c.getRemarks() == null || "null".equalsIgnoreCase(c.getRemarks())) ? "No Remarks" : c.getRemarks() %>
+                            </span>
                         </td>
                         <td><%= c.getCreated_at() %></td>
                         <td><%= c.getUpdated_at() %> last update user : <%= user.getUser_id() %></td>
                         <td class="d-flex gap-2">
+                            <%
+                                boolean isAdmin = user.isAdmin();
+                                boolean isEmployee = user.isEmployee();
+                                boolean isPending = "PENDING".equalsIgnoreCase(c.getStatus());
+
+                                if (isAdmin || (isEmployee && isPending)) {
+                            %>
                             <a class="btn btn-warning btn-sm w-50"
                                href="${pageContext.request.contextPath}/complaint/update?complaintId=<%= c.getComplaint_id() %>">Update</a>
                             <a class="btn btn-danger btn-sm w-50"
                                href="${pageContext.request.contextPath}/complaint/delete?complaintId=<%= c.getComplaint_id() %>"
                                onclick="return confirm('Are you sure you want to delete this complaint?');">Delete</a>
+                            <%
+                            } else {
+                            %>
+                            <span class="text-dark fw-bold bg-light">No actions</span>
+                            <%
+                                }
+                            %>
                         </td>
+
                     </tr>
                     <%
                             }

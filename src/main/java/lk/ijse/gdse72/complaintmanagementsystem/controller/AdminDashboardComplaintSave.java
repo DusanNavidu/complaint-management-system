@@ -16,67 +16,70 @@ import java.time.LocalDateTime;
 @WebServlet(name = "admindashbordsave", value = "/admindashbordsave")
 public class AdminDashboardComplaintSave extends HttpServlet {
 
-    private ComplaintModel complaintModel = new ComplaintModel();
+    private final ComplaintModel complaintModel = new ComplaintModel();
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(httpServletRequest, httpServletResponse);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String subject = httpServletRequest.getParameter("subject");
-        System.out.println("Subject: " + subject);
-        String description = httpServletRequest.getParameter("description");
-        String category = httpServletRequest.getParameter("category");
-        String department = httpServletRequest.getParameter("department");
-        String status = httpServletRequest.getParameter("status");
-        String remarks = httpServletRequest.getParameter("remarks");
-        remarks = (remarks != null && !remarks.trim().isEmpty()) ? remarks.trim() : null;
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String subject = req.getParameter("subject");
+        String description = req.getParameter("description");
+        String category = req.getParameter("category");
+        String department = req.getParameter("department");
+        String status = req.getParameter("status");
 
+        // Check session user
+        UserDTO user = (UserDTO) req.getSession().getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/signin.jsp?error=sessionExpired");
+            return;
+        }
+
+        String userId = user.getUser_id();
+        String role = user.getRole(); // You must have this method in UserDTO
+
+        if (userId == null || userId.isEmpty()) {
+            req.setAttribute("errorMessage", "User session expired. Please log in again.");
+            req.getRequestDispatcher("/pages/signin.jsp").forward(req, resp);
+            return;
+        }
+
+        // Role-based remarks logic
+        String remarks = null;
+        if ("ADMIN".equalsIgnoreCase(role)) {
+            remarks = req.getParameter("remarks");
+            remarks = (remarks != null && !remarks.trim().isEmpty()) ? remarks.trim() : null;
+        }
+
+        // Validations
         boolean hasError = false;
 
         if (!ValidationUtil.isValidSubject(subject)) {
-            httpServletRequest.setAttribute("subjectError", "Use letters and numbers only");
+            req.setAttribute("subjectError", "Use letters and numbers only");
             hasError = true;
         }
         if (!ValidationUtil.isValidDescription(description)) {
-            httpServletRequest.setAttribute("descriptionError", "UTry again... minimum 5 characters");
+            req.setAttribute("descriptionError", "Try again... minimum 5 characters");
             hasError = true;
         }
         if (!ValidationUtil.isValidCategory(category)) {
-            httpServletRequest.setAttribute("categoryError", "Invalid category");
+            req.setAttribute("categoryError", "Invalid category");
             hasError = true;
         }
         if (!ValidationUtil.isValidDepartment(department)) {
-            httpServletRequest.setAttribute("departmentError", "Invalid department");
+            req.setAttribute("departmentError", "Invalid department");
             hasError = true;
         }
         if (!ValidationUtil.isValidStatus(status)) {
-            httpServletRequest.setAttribute("statusError", "Invalid status");
+            req.setAttribute("statusError", "Invalid status");
             hasError = true;
         }
-//        if (!ValidationUtil.isValidRemarks(remarks)) {
-//            httpServletRequest.setAttribute("remarksError" , "Try again... minimum 5 characters");
-//            hasError = true;
-//        }
 
         if (hasError) {
-            System.out.println("Validation errors found, redirecting to form.");
-            httpServletRequest.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(httpServletRequest, httpServletResponse);
-            return;
-        }
-        UserDTO user = (UserDTO) httpServletRequest.getSession().getAttribute("user");
-        if (user == null) {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/signin.jsp?error=sessionExpired");
-            return;
-        }
-        String userId = user.getUser_id();
-        System.out.println("User ID: " + userId);
-        if (userId == null || userId.isEmpty()) {
-            System.out.println("User ID is null or empty.");
-            httpServletRequest.setAttribute("errorMessage", "User session expired. Please log in again.");
-            httpServletRequest.getRequestDispatcher("/pages/signin.jsp").forward(httpServletRequest, httpServletResponse);
+            req.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(req, resp);
             return;
         }
 
@@ -96,13 +99,11 @@ public class AdminDashboardComplaintSave extends HttpServlet {
         boolean isSaved = complaintModel.saveComplaint(complaintDTO);
 
         if (isSaved) {
-            System.out.println("Complaint saved successfully.");
-            httpServletRequest.setAttribute("successMessage", "Complaint saved successfully.");
-            httpServletRequest.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(httpServletRequest, httpServletResponse);
+            req.setAttribute("complainMassage", "Complaint saved successfully.");
         } else {
-            System.out.println("Failed to save complaint.");
-            httpServletRequest.setAttribute("errorMessage", "Failed to save complaint. Please try again.");
-            httpServletRequest.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(httpServletRequest, httpServletResponse);
+            req.setAttribute("complainMassage", "Failed to save complaint. Please try again.");
         }
+
+        req.getRequestDispatcher("/pages/adminDashboardComplaint.jsp").forward(req, resp);
     }
 }

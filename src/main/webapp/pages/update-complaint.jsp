@@ -1,4 +1,5 @@
 <%@ page import="lk.ijse.gdse72.complaintmanagementsystem.dto.ComplaintDTO" %>
+<%@ page import="lk.ijse.gdse72.complaintmanagementsystem.dto.UserDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     ComplaintDTO complaint = (ComplaintDTO) request.getAttribute("complaint");
@@ -10,6 +11,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="p-5">
+<%
+    UserDTO user = (UserDTO) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/signin.jsp?error=session");
+        return;
+    }
+%>
 <h2>Update Complaint</h2>
 <form action="<%= request.getContextPath() %>/complaint/update" method="post">
     <!-- ✅ Fixed hidden field name to match servlet -->
@@ -87,10 +95,18 @@
         </select>
     </div>
 
-    <div class="mb-3">
-        <label>Remarks</label>
-        <textarea name="remarks" class="form-control"><%= complaint.getRemarks() %></textarea>
+<%--    <div class="mb-3">--%>
+<%--        <label>Remarks</label>--%>
+<%--        <textarea name="remarks" class="form-control"><%= complaint.getRemarks() %></textarea>--%>
+<%--    </div>--%>
+
+    <% if ("ADMIN".equalsIgnoreCase(user.getRole())) { %>
+    <div class="col-md-6">
+        <label for="remarks" class="form-label">Remarks</label>
+        <textarea id="remarks" name="remarks" class="form-control" rows="4" placeholder="Enter remarks (Admin only)"></textarea>
+        <div class="text-danger">${remarksError}</div>
     </div>
+    <% } %>
 
     <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to update this complaint?')">Update</button>
 </form>

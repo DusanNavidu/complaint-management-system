@@ -113,7 +113,7 @@ public class SignUpController extends HttpServlet {
         if (isUserAdded) {
             System.out.println("User created successfully");
             httpServletRequest.setAttribute("successMessage", "User created successfully.");
-            httpServletRequest.getRequestDispatcher("pages/login.jsp").forward(httpServletRequest, httpServletResponse);
+            httpServletRequest.getRequestDispatcher("pages/signin.jsp").forward(httpServletRequest, httpServletResponse);
         } else {
             System.out.println("Failed to create user");
             httpServletRequest.setAttribute("errorMessage", "Failed to create user. Please try again.");
