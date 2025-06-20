@@ -23,24 +23,63 @@
     <!-- Sidebar -->
     <div class="border-end p-3 position-fixed top-0 left-0" style="min-width: 250px; height: 100vh; background-color: #153c61">
         <div class="mb-4 text-white">
-            <img src="${pageContext.request.contextPath}/assets/image/images.png" alt="user image"
+            <%
+                String role = user.getRole();
+                String imagePath = "ADMIN".equalsIgnoreCase(role)
+                        ? "/assets/image/images.png"
+                        : "/assets/image/Employee Icon with Blue Accents.png";
+            %>
+            <img src="<%= request.getContextPath() + imagePath %>"
+                 alt="<%= role %> image"
                  style="border-radius: 50%; width: 200px; height: 200px;">
-            <p><i>Email:</i> <%= user.getEmail() %></p>
+<%--            <p class="text-white text-center mt-2"><%= role %></p>--%>
+            <p><i>Email:</i> <a style="color: white" href="mailto:<%= user.getEmail() %>"><%= user.getEmail() %></a></p>
             <h3 class="mt-3" style="font-size: 1.3rem">Welcome,</h3>
-            <h5><%= user.getFull_name() %></h5>
+            <h3 class="fw-bold"><%= user.getFull_name() %></h3>
         </div>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp">Home</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/adminDashboardComplaint.jsp">Complaint</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/pages/complaintTables.jsp">Complaint View</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">User details</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">Settings</a></li>
-            <li class="nav-item"><a class="nav-link text-danger" href="${pageContext.request.contextPath}/logout">Logout</a></li>
+        <ul class="nav flex-column mt-5 gap-3">
+            <li class="nav-item"><a class="nav-link text-white"
+                                    href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp"
+                                    style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                <img style="width: 20px; height: 20px;" src="${pageContext.request.contextPath}/assets/icon/house-black-silhouette-without-door.png">
+                Home</a>
+            </li>
+            <li class="nav-item"><a class="nav-link text-white"
+                                    href="${pageContext.request.contextPath}/pages/adminDashboardComplaint.jsp"
+                                    style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                <img style="width: 20px; height: 20px;" src="${pageContext.request.contextPath}/assets/icon/complain.png">
+                Complaint</a></li>
+            <li class="nav-item"><a class="nav-link text-white"
+                                    href="${pageContext.request.contextPath}/pages/complaintTables.jsp"
+                                    style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                <img style="width: 20px; height: 20px;" src="${pageContext.request.contextPath}/assets/icon/tablet.png">
+                Complaint View</a></li>
+            <% if ("ADMIN".equalsIgnoreCase(user.getRole())) { %>
+            <li class="nav-item"><a class="nav-link text-white"
+                                    href="${pageContext.request.contextPath}/pages/userTable.jsp"
+                                    style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                <img style="width: 20px; height: 20px;" src="${pageContext.request.contextPath}/assets/icon/user(2).png">
+                User details</a></li>
+            <% } %>
+            <li class="nav-item"><a class="nav-link text-white"
+                                    href="#"
+                                    style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                <img style="width: 20px; height: 20px;" src="${pageContext.request.contextPath}/assets/icon/setting.png">
+                Settings</a></li>
+            <li class="nav-item">
+                <a class="nav-link text-danger"
+                   href="${pageContext.request.contextPath}/logout"
+                   style="display: flex; justify-content: start; align-items: center; font-size: 1.1rem; gap: 10px">
+                    <img src="${pageContext.request.contextPath}/assets/icon/exit.png"
+                         style="width: 20px; height: 20px;" alt="Logout">
+                    Logout
+                </a>
+            </li>
         </ul>
     </div>
 
     <!-- Main Content -->
-    <div class="flex-grow-1 p-5" style="height: 100vh ; margin-left: 250px;">
+    <div class="flex-grow-1 p-5" style="height: 100vh ; margin-left: 250px; background-color: #e9eaf0;">
         <h2>Complaint Management System</h2>
         <p class="text-muted">Dashboard Complaint</p>
 
@@ -134,14 +173,15 @@
                     <div class="text-danger">${statusError}</div>
                 </div>
             </div>
-            <div class="mt-4 d-flex justify-content-end">
+            <div class="mt-4 d-flex justify-content-end gap-3">
+                <a href="${pageContext.request.contextPath}/pages/complaintTables.jsp" class="btn btn-primary">Complaint Table View</a>
                 <button type="submit" class="btn btn-success">Save Complaint</button>
                 <p class="text-primary">${complainMassage}</p>
             </div>
         </form>
 
         <!-- Complaint Table -->
-        <div class="mt-5">
+        <div>
             <h4>All Complaints</h4>
 
             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
@@ -161,7 +201,7 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="background-color: white">
                     <%
                         List<ComplaintDTO> complaints = null;
                         try {
@@ -219,7 +259,6 @@
                                 }
                             %>
                         </td>
-
                     </tr>
                     <%
                             }

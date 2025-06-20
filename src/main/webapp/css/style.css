@@ -1,0 +1,19 @@
+#box1:hover {
+    border: yellow 2px solid;
+}
+
+#box2:hover {
+    border: blue 2px solid;
+}
+
+#box3:hover {
+    border: green 2px solid;
+}
+
+#box4:hover {
+    border: red 2px solid;
+}
+
+#main-content{
+    height: 100vh !important;
+}

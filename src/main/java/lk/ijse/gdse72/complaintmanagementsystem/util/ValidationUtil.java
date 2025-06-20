@@ -17,46 +17,46 @@ public class ValidationUtil {
         if (nic == null || nic.trim().isEmpty()) return false;
         return nic.matches("^[0-9]{9}[vVxX]$") || nic.matches("^[0-9]{12}$");
     }
-//    public static boolean doesNICBirthdayMatch(String nic, String birthdayInput) {
-//        LocalDate birthdayFromNIC = extractBirthdayFromNIC(nic);
-//        LocalDate birthdayFromForm;
-//
-//        try {
-//            birthdayFromForm = LocalDate.parse(birthdayInput); // yyyy-MM-dd
-//        } catch (Exception e) {
-//            return false;
-//        }
-//
-//        return birthdayFromNIC != null && birthdayFromNIC.equals(birthdayFromForm);
-//    }
-//
-//    public static LocalDate extractBirthdayFromNIC(String nic) {
-//        int year;
-//        int dayOfYear;
-//
-//        try {
-//            if (nic.matches("\\d{9}[vVxX]")) {
-//                year = 1900 + Integer.parseInt(nic.substring(0, 2));
-//                dayOfYear = Integer.parseInt(nic.substring(2, 5));
-//            } else if (nic.matches("\\d{12}")) {
-//                year = Integer.parseInt(nic.substring(0, 4));
-//                dayOfYear = Integer.parseInt(nic.substring(4, 7));
-//            } else {
-//                return null;
-//            }
-//
-//            if (dayOfYear > 866 || dayOfYear < 1) return null; // avoid invalid range
-//
-//            if (dayOfYear > 500) {
-//                dayOfYear -= 500; // female NIC
-//            }
-//
-//            // validate if dayOfYear fits in that year
-//            return LocalDate.ofYearDay(year, dayOfYear);
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
+    public static boolean doesNICBirthdayMatch(String nic, String birthdayInput) {
+        LocalDate birthdayFromNIC = extractBirthdayFromNIC(nic);
+        LocalDate birthdayFromForm;
+
+        try {
+            birthdayFromForm = LocalDate.parse(birthdayInput); // yyyy-MM-dd
+        } catch (Exception e) {
+            return false;
+        }
+
+        return birthdayFromNIC != null && birthdayFromNIC.equals(birthdayFromForm);
+    }
+
+    public static LocalDate extractBirthdayFromNIC(String nic) {
+        int year;
+        int dayOfYear;
+
+        try {
+            if (nic.matches("\\d{9}[vVxX]")) {
+                year = 1900 + Integer.parseInt(nic.substring(0, 2));
+                dayOfYear = Integer.parseInt(nic.substring(2, 5));
+            } else if (nic.matches("\\d{12}")) {
+                year = Integer.parseInt(nic.substring(0, 4));
+                dayOfYear = Integer.parseInt(nic.substring(4, 7));
+            } else {
+                return null;
+            }
+
+            if (dayOfYear > 866 || dayOfYear < 1) return null; // avoid invalid range
+
+            if (dayOfYear > 500) {
+                dayOfYear -= 500; // female NIC
+            }
+
+            // validate if dayOfYear fits in that year
+            return LocalDate.ofYearDay(year, dayOfYear);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public static boolean isValidUsername(String username) {
         return username != null && !username.trim().isEmpty() && username.length() >= 3 && username.length() <= 20 &&
                username.matches("^[a-zA-Z0-9_]+$");

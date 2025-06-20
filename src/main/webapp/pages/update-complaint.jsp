@@ -18,6 +18,12 @@
         return;
     }
 %>
+
+<a href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp" style="text-decoration: none; background-color: #153c61; border-radius: 10px; width: 300px; height: 45px; display: flex; justify-content: center; align-items: center; margin-bottom: 40px;">
+    <img src="${pageContext.request.contextPath}/assets/icon/house-black-silhouette-without-door.png" alt="home icon" style="width: 35px; height: 35px">
+    <h4 class="text-white ms-3">Home</h4>
+</a>
+
 <h2>Update Complaint</h2>
 <form action="<%= request.getContextPath() %>/complaint/update" method="post">
     <!-- ✅ Fixed hidden field name to match servlet -->

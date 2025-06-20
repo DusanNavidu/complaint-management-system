@@ -58,7 +58,6 @@ public class ComplaintUpdateController extends HttpServlet {
                 return;
             }
 
-            // 🔐 Role-based restrictions
             if (user.isEmployee()) {
                 if (!"PENDING".equalsIgnoreCase(existingComplaint.getStatus())) {
                     // Employee is not allowed to update non-pending complaints
@@ -67,7 +66,6 @@ public class ComplaintUpdateController extends HttpServlet {
                 }
             }
 
-            // ✅ Populate DTO
             ComplaintDTO complaint = new ComplaintDTO();
             complaint.setComplaint_id(complaintId);
             complaint.setSubject(subject);
@@ -84,7 +82,6 @@ public class ComplaintUpdateController extends HttpServlet {
                 complaint.setRemarks(existingComplaint.getRemarks());
             }
 
-            // ⏫ Update
             if (complaintModel.updateComplaint(complaint)) {
                 resp.sendRedirect(req.getContextPath() + "/pages/adminDashboardComplaint.jsp?success=update");
             } else {

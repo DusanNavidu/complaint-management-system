@@ -50,11 +50,11 @@ public class SignUpController extends HttpServlet {
             hasError = true;
         }
 
-//        if (!ValidationUtil.doesNICBirthdayMatch(nic, birthday)) {
-//            httpServletRequest.setAttribute("birthdayError", "Birthday does not match NIC.");
-//            httpServletRequest.setAttribute("nicNumberError", "NIC does not match Birthday.");
-//            hasError = true;
-//        }
+        if (!ValidationUtil.doesNICBirthdayMatch(nic, birthday)) {
+            httpServletRequest.setAttribute("birthdayError", "Birthday does not match NIC.");
+            httpServletRequest.setAttribute("nicNumberError", "NIC does not match Birthday.");
+            hasError = true;
+        }
 
         if (!ValidationUtil.isValidUsername(username)) {
             httpServletRequest.setAttribute("usernameError", "Invalid username.");

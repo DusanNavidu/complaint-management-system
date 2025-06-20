@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-<main class="mt-5">
+<body style="background-color: #e9eaf0;">
+<main class="m-5">
     <%
         UserDTO user = (UserDTO) session.getAttribute("user");
         if (user == null) {
@@ -22,17 +22,18 @@
         List<ComplaintDTO> complaints = (List<ComplaintDTO>) request.getAttribute("complaints");
     %>
 
-    <a href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp">
-        <div style="background-color: #153c61; border-radius: 10px; width: 300px; height: 70px; display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-            <img src="${pageContext.request.contextPath}/assets/icon/house-black-silhouette-without-door.png" alt="home icon" style="width: 50px; height: 50px">
+    <a href="${pageContext.request.contextPath}/pages/adminDashboardHome.jsp" style="text-decoration: none; background-color: #153c61; border-radius: 10px; width: 300px; height: 45px; display: flex; justify-content: center; align-items: center; margin-bottom: 40px;">
+            <img src="${pageContext.request.contextPath}/assets/icon/house-black-silhouette-without-door.png" alt="home icon" style="width: 35px; height: 35px">
             <h4 class="text-white ms-3">Home</h4>
-        </div>
     </a>
 
     <h2 class="mb-4">Complaint Management</h2>
 
     <!-- Filter Dropdown -->
     <form action="${pageContext.request.contextPath}/complaint/filter" method="get" class="d-flex gap-2 mb-3">
+        <input type="text" name="searchId" class="form-control" placeholder="Search by Complaint ID" style="width: 300px;"
+               value="<%= request.getAttribute("searchId") != null ? request.getAttribute("searchId") : "" %>"/>
+
         <select name="status" class="form-select" style="width: 200px;">
             <option value="ALL" <%= "ALL".equals(selectedStatus) ? "selected" : "" %>>All</option>
             <option value="RECENT" <%= "RECENT".equals(selectedStatus) ? "selected" : "" %>>Recently</option>
@@ -41,7 +42,8 @@
             <option value="RESOLVED" <%= "RESOLVED".equals(selectedStatus) ? "selected" : "" %>>Resolved</option>
             <option value="REJECTED" <%= "REJECTED".equals(selectedStatus) ? "selected" : "" %>>Rejected</option>
         </select>
-        <button type="submit" class="btn btn-primary">OK</button>
+
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!-- Complaint Table -->
@@ -62,7 +64,7 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: white">
             <%
                 if (complaints != null && !complaints.isEmpty()) {
                     for (ComplaintDTO c : complaints) {
@@ -90,11 +92,25 @@
                 <td><%= c.getCreated_at() %></td>
                 <td><%= c.getUpdated_at() %> (by: <%= user.getUser_id() %>)</td>
                 <td class="d-flex gap-2">
+                    <%
+                        boolean isAdmin = user.isAdmin();
+                        boolean isEmployee = user.isEmployee();
+                        boolean isPending = "PENDING".equalsIgnoreCase(c.getStatus());
+
+                        if (isAdmin || (isEmployee && isPending)) {
+                    %>
                     <a class="btn btn-warning btn-sm w-50"
                        href="${pageContext.request.contextPath}/complaint/update?complaintId=<%= c.getComplaint_id() %>">Update</a>
                     <a class="btn btn-danger btn-sm w-50"
                        href="${pageContext.request.contextPath}/complaint/delete?complaintId=<%= c.getComplaint_id() %>"
                        onclick="return confirm('Are you sure you want to delete this complaint?');">Delete</a>
+                    <%
+                    } else {
+                    %>
+                    <span class="text-dark fw-bold bg-light">No actions</span>
+                    <%
+                        }
+                    %>
                 </td>
             </tr>
             <%
